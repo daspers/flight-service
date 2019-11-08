@@ -61,13 +61,11 @@ def generate_search_query(params):
             param_applied = True
         val = datetime.datetime.strptime(params['end_date'], initial_date_format).strftime(mysql_date_format)
         query += 'DATE(`departure_date`)<='+val
-    print(query)
     return query
 
 
 def generate_search_by_id_query(flight_id):
     query = flight_query + ' WHERE `flight_id`="{}"'.format(flight_id)
-    print(query)
     return query
 
 def generate_update_diff_query_by_id(update_param, flight_id):
@@ -82,7 +80,5 @@ def generate_update_diff_query_by_id(update_param, flight_id):
             update_string += "`{}`=`{}`-{}".format(key, key, -val)
         separator = True
 
-    print('yo wtf', (update_string))
     query = flight_update_query.format(update_string, '`flight_id`="{}"'.format(flight_id))
-    print(query)
     return query

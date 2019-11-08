@@ -3,7 +3,7 @@ from flask import Flask, request
 from flask_mysqldb import MySQL
 
 
-from controller.flight import get_flights
+from controller.flight import get_flights, get_flight_by_id
 from controller.booking import create_booking, cancel_booking
 
 
@@ -48,12 +48,20 @@ def create_app():
         except:
             return 'Internal Server Error', 500
 
+    @app.route('/airline/flight/<flight_id>', methods=['GET'])
+    def get_flight_by_id_handler(flight_id):
+        # try:
+            return get_flight_by_id(mysql, flight_id)
+        # except:
+        #     return 'Internal Server Error', 500
+
     return app
 
 
 app = create_app()
 app.run(
-    port=5000,
+    host='localhost',
+    port=5001,
     threaded=True,
     debug=False
 )

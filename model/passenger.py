@@ -20,5 +20,4 @@ def generate_delete_passenger_query(params):
         param_applied = True
         query_condition += '`{}`="{}"'.format(key,val)
     query = delete_passenger_query + query_condition
-    print(query)
     return query

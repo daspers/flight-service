@@ -47,10 +47,8 @@ def create_booking(mysql, params):
     mysql.connection.commit()
     cur.close()
 
-    print(booking_id)
-
     data = {'booking_id': booking_id}
-    return json.dumps(data), 200
+    return json.dumps(data, default=str), 200
 
 
 def cancel_booking(mysql, params):
@@ -63,6 +61,7 @@ def cancel_booking(mysql, params):
     booking = get_booking(mysql, booking_id)
     if booking is None:
         return 'Error! Invalid value', 400
+
     booking = BookingModel(*list(booking)).get_data()
     flight_id = booking['flight_id']
 

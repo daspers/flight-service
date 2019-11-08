@@ -42,7 +42,6 @@ def generate_get_booking_query(params):
             param_applied = True
         query_condition += '{}="{}"'.format(str(key), val)
     query = get_booking_query + query_condition
-    print(query)
     return query
 
 
@@ -55,5 +54,4 @@ def generate_delete_booking_query(params):
         param_applied = True
         query_condition += '{}="{}"'.format(str(key), val)
     query = delete_booking_query + query_condition
-    print(query)
     return query
