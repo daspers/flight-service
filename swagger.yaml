@@ -1,0 +1,186 @@
+openapi: 3.0.0
+info:
+  version: "1.0.0-oas3"
+  title: Flight Search
+  description: A simple API of flights
+security:
+  - UserSecurity: []
+paths:
+  /flight:
+    get:
+      parameters:
+        - name: origin_city
+          in: query
+          description: Specifies the origin city of flights
+          schema:
+            type: string
+        - name: destination_city
+          in: query
+          description: Specifies the destination city of flights
+          schema:
+            type: string
+        - name: start_date
+          in: query
+          description: Specifies the start date of flights in format dd-mm-yyyy
+          schema:
+            type: string
+        - name: end_date
+          in: query
+          description: Specifies the end date of flights in format dd-mm-yyyy
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successfully returned a list of flights
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  flights:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        flight_id:
+                          type: string
+                        departure_date:
+                          type: string
+                        arrival_date:
+                          type: string
+                        price:
+                          type: number
+                        remaining_seat:
+                          type: integer
+                        origin_code:
+                          type: string
+                        origin_airport:
+                          type: string
+                        destination_code:
+                          type: string
+                        destination_airport:
+                          type: string
+        '400':
+          description: Invalid request
+          content:
+            text/plain:
+              schema:
+                type: string
+  /flight/book:
+    post:
+      requestBody:
+        required: true
+        content:
+          text/plain:
+            schema:
+              type: string
+          application/json:
+            schema:
+              type: object
+              properties:
+                flight_id:
+                  type: string
+                passengers:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      name:
+                        type: string
+                      identification:
+                        type: string
+      responses:
+        '200':
+          description: booking id
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  booking_id:
+                    type: string
+        '400':
+          description: Invalid request
+          content:
+            text/plain:
+              schema:
+                type: string
+  /flight/book/cancel:
+    post:
+      requestBody:
+        required: true
+        content:
+          text/plain:
+            schema:
+              type: string
+          application/json:
+            schema:
+              type: object
+              properties:
+                booking_id:
+                  type: string
+      responses:
+        '200':
+          description: success message
+          content:
+            text/plain:
+              schema:
+                type: string
+        '400':
+          description: Invalid request
+          content:
+            text/plain:
+              schema:
+                type: string
+  /flight/{flight_id}:
+    get:
+      parameters:
+        - in: path
+          name: flight_id   # Note the name is the same as in the path
+          required: true
+          schema:
+            type: string
+          description: The flight ID
+      responses:
+        '200':
+          description: Successfully returned a flight
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  flight:
+                    type: object
+                    properties:
+                      flight_id:
+                        type: string
+                      departure_date:
+                        type: string
+                      arrival_date:
+                        type: string
+                      price:
+                        type: number
+                      remaining_seat:
+                        type: integer
+                      origin_code:
+                        type: string
+                      origin_airport:
+                        type: string
+                      destination_code:
+                        type: string
+                      destination_airport:
+                        type: string
+        '404':
+          description: ID not Found
+          content:
+            text/plain:
+              schema:
+                type: string
+
+servers:
+  - url: 'http://178.128.17.146:5001/airline'
+components:
+  securitySchemes:
+    UserSecurity:
+      type: http
+      scheme: basic
